@@ -82,12 +82,12 @@ Ardından “Servers” sekmesine gelinir ve rebalance butonuna tıklanır.
 `yum install python-requests` ile python-requests modülü yüklenir. 
 Sonrasında `vim check.py`  ile dosya oluşturulup aşağıdaki gibi düzenlenir:  
 ```
-#Importing libraries that we will use in getting information
+#Importing libraries that we will use in getting information.
 import requests
 from requests.auth import HTTPBasicAuth
 import json
 
-#We are defining a class define our clusters
+#We are defining a class to store information about our clusters.
 class Case:
     def __init__(self, clusterName, balanced, nodes, ramTotal ):
         self.clusterName = clusterName
@@ -95,7 +95,7 @@ class Case:
         self.nodes = nodes
         self.ramTotal = ramTotal
 
-
+#This class has purpose of authentication.
 class Auth:
     def __init__(self, ip, port, username, password):
         self.ip=ip
@@ -103,8 +103,9 @@ class Auth:
         self.username=username
         self.password=password
 
+
     def getCluster(self):
-        url="http://"+self.ip+":"+self.port+"/pools/default"
+        url="http://"+self.ip+":"+self.port+"/pools/default" #This api gives general information about cluster pools, we are going to use it in this example.
         print(url)
         response = requests.get(url, auth=HTTPBasicAuth(self.username, self.password))
         clusters = response.json()
@@ -115,7 +116,6 @@ class Auth:
 
 
 user=Auth("192.168.79.130", "8081", "Administrator", "root123")
-(user.ip,user.username,user.password)
 cluster=user.getCluster()
 print(cluster.clusterName,cluster.balanced,cluster.nodes,cluster.ramTotal)
 ```
